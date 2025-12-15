@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDO Hygiene Monitoring System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>FDO Hygiene</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item active">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="projects.html" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="hygiene-rules.html" class="nav-item">
+                    <i class="fas fa-list-check"></i>
+                    <span>Hygiene Rules</span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="audit-log.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Log</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Hygiene Monitoring Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="runHygieneCheckBtn">
+                        <i class="fas fa-play"></i> Run Hygiene Check
+                    </button>
+                    <div class="last-check">
+                        Last check: <span id="lastCheckTime">Never</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: #ef4444;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Total Issues</div>
+                        <div class="kpi-value" id="totalIssues">0</div>
+                        <div class="kpi-change negative" id="issuesChange">+0 today</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: #f59e0b;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Pending Resolution</div>
+                        <div class="kpi-value" id="pendingIssues">0</div>
+                        <div class="kpi-change" id="pendingChange">0 pending</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: #10b981;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Resolved Today</div>
+                        <div class="kpi-value" id="resolvedToday">0</div>
+                        <div class="kpi-change positive" id="resolvedChange">+0 today</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: #3b82f6;">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Compliance Rate</div>
+                        <div class="kpi-value" id="complianceRate">0%</div>
+                        <div class="kpi-change" id="complianceChange">0% change</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Hygiene Issues Trend</h3>
+                        <select id="trendPeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="14">Last 14 Days</option>
+                            <option value="30">Last 30 Days</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Issues by Category</h3>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Issues Table -->
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>Active Hygiene Issues</h3>
+                    <div class="card-actions">
+                        <input type="text" placeholder="Search issues..." id="searchIssues" class="search-input">
+                        <select id="severityFilter" class="filter-select">
+                            <option value="">All Severities</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Issue Type</th>
+                                <th>Severity</th>
+                                <th>Detected</th>
+                                <th>Project Manager</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issuesTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading issues...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

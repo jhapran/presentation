@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - FDO Hygiene Monitoring</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>FDO Hygiene</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="projects.html" class="nav-item active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="hygiene-rules.html" class="nav-item">
+                    <i class="fas fa-list-check"></i>
+                    <span>Hygiene Rules</span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="audit-log.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Log</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Project Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addProjectBtn">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                </div>
+            </header>
+
+            <!-- Project Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalProjects">0</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeProjects">0</div>
+                    <div class="stat-label">Active Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="projectsWithIssues">0</div>
+                    <div class="stat-label">Projects with Issues</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="healthyProjects">0</div>
+                    <div class="stat-label">Healthy Projects</div>
+                </div>
+            </div>
+
+            <!-- Projects Table -->
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>All Projects</h3>
+                    <div class="card-actions">
+                        <input type="text" placeholder="Search projects..." id="searchProjects" class="search-input">
+                        <select id="statusFilter" class="filter-select">
+                            <option value="">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="planning">Planning</option>
+                            <option value="execution">Execution</option>
+                            <option value="closure">Closure</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Status</th>
+                                <th>Stage</th>
+                                <th>Project Manager</th>
+                                <th>Start Date</th>
+                                <th>Health Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projectsTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading projects...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Project</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <input type="hidden" id="projectId">
+                    
+                    <div class="form-group">
+                        <label for="projectCode">Project Code *</label>
+                        <input type="text" id="projectCode" required placeholder="e.g., PROJ-001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectName">Project Name *</label>
+                        <input type="text" id="projectName" required placeholder="Enter project name">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectStatus">Status *</label>
+                            <select id="projectStatus" required>
+                                <option value="">Select Status</option>
+                                <option value="planning">Planning</option>
+                                <option value="active">Active</option>
+                                <option value="execution">Execution</option>
+                                <option value="closure">Closure</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectStage">Stage *</label>
+                            <select id="projectStage" required>
+                                <option value="">Select Stage</option>
+                                <option value="initiation">Initiation</option>
+                                <option value="planning">Planning</option>
+                                <option value="execution">Execution</option>
+                                <option value="monitoring">Monitoring</option>
+                                <option value="closure">Closure</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectManager">Project Manager *</label>
+                        <input type="text" id="projectManager" required placeholder="Enter PM name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pmEmail">PM Email *</label>
+                        <input type="email" id="pmEmail" required placeholder="pm@example.com">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Start Date *</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="3" placeholder="Enter project description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nominations">Nominations</label>
+                        <textarea id="nominations" rows="2" placeholder="Enter nominations (comma-separated)"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+</html>

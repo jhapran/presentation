@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hygiene Rules - FDO Hygiene Monitoring</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>FDO Hygiene</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="projects.html" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="hygiene-rules.html" class="nav-item active">
+                    <i class="fas fa-list-check"></i>
+                    <span>Hygiene Rules</span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="audit-log.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Log</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Hygiene Rules Configuration</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addRuleBtn">
+                        <i class="fas fa-plus"></i> Add Rule
+                    </button>
+                </div>
+            </header>
+
+            <!-- Rules Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRules">0</div>
+                    <div class="stat-label">Total Rules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeRules">0</div>
+                    <div class="stat-label">Active Rules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="criticalRules">0</div>
+                    <div class="stat-label">Critical Rules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="triggeredRules">0</div>
+                    <div class="stat-label">Triggered Today</div>
+                </div>
+            </div>
+
+            <!-- Rules Table -->
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>All Hygiene Rules</h3>
+                    <div class="card-actions">
+                        <input type="text" placeholder="Search rules..." id="searchRules" class="search-input">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="">All Categories</option>
+                            <option value="data_quality">Data Quality</option>
+                            <option value="status">Status Validation</option>
+                            <option value="nomination">Nomination</option>
+                            <option value="stage_mapping">Stage Mapping</option>
+                            <option value="mandatory_fields">Mandatory Fields</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Category</th>
+                                <th>Severity</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rulesTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center">Loading rules...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Rule Modal -->
+    <div id="ruleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Hygiene Rule</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="ruleForm">
+                    <input type="hidden" id="ruleId">
+                    
+                    <div class="form-group">
+                        <label for="ruleName">Rule Name *</label>
+                        <input type="text" id="ruleName" required placeholder="e.g., Missing Project Status">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ruleCategory">Category *</label>
+                            <select id="ruleCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="data_quality">Data Quality</option>
+                                <option value="status">Status Validation</option>
+                                <option value="nomination">Nomination</option>
+                                <option value="stage_mapping">Stage Mapping</option>
+                                <option value="mandatory_fields">Mandatory Fields</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ruleSeverity">Severity *</label>
+                            <select id="ruleSeverity" required>
+                                <option value="">Select Severity</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ruleDescription">Description *</label>
+                        <textarea id="ruleDescription" rows="3" required placeholder="Describe the hygiene rule"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ruleCondition">Rule Condition *</label>
+                        <select id="ruleCondition" required>
+                            <option value="">Select Condition</option>
+                            <option value="field_empty">Field is Empty</option>
+                            <option value="field_outdated">Field is Outdated</option>
+                            <option value="field_invalid">Field has Invalid Value</option>
+                            <option value="field_mismatch">Field Mismatch</option>
+                            <option value="missing_required">Missing Required Data</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetField">Target Field *</label>
+                        <input type="text" id="targetField" required placeholder="e.g., projectStatus, nominations">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expectedValue">Expected Value/Pattern</label>
+                        <input type="text" id="expectedValue" placeholder="e.g., active, not empty">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correctionAction">Corrective Action *</label>
+                        <textarea id="correctionAction" rows="3" required placeholder="What should the PM do to resolve this issue?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="ruleEnabled" checked>
+                            <span>Enable this rule</span>
+                        </label>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Rule
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/hygiene-rules.js"></script>
+</body>
+</html>

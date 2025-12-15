@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - FDO Hygiene Monitoring</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>FDO Hygiene</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="projects.html" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="hygiene-rules.html" class="nav-item">
+                    <i class="fas fa-list-check"></i>
+                    <span>Hygiene Rules</span>
+                </a>
+                <a href="notifications.html" class="nav-item active">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="audit-log.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Log</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Notification Center</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="sendTestNotificationBtn">
+                        <i class="fas fa-paper-plane"></i> Send Test Notification
+                    </button>
+                </div>
+            </header>
+
+            <!-- Notification Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalNotifications">0</div>
+                    <div class="stat-label">Total Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="issueNotifications">0</div>
+                    <div class="stat-label">Issue Alerts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="resolutionNotifications">0</div>
+                    <div class="stat-label">Resolution Confirmations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="todayNotifications">0</div>
+                    <div class="stat-label">Sent Today</div>
+                </div>
+            </div>
+
+            <!-- Notifications Table -->
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>Notification History</h3>
+                    <div class="card-actions">
+                        <input type="text" placeholder="Search notifications..." id="searchNotifications" class="search-input">
+                        <select id="typeFilter" class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="issue_detected">Issue Detected</option>
+                            <option value="issue_resolved">Issue Resolved</option>
+                            <option value="reminder">Reminder</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Notification ID</th>
+                                <th>Type</th>
+                                <th>Project</th>
+                                <th>Recipient</th>
+                                <th>Subject</th>
+                                <th>Sent At</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notificationsTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading notifications...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Email Preview Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Email Preview</h2>
+                <button class="close-btn" id="closeEmailModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="email-preview">
+                    <div class="email-header">
+                        <div class="email-field">
+                            <strong>To:</strong> <span id="emailTo"></span>
+                        </div>
+                        <div class="email-field">
+                            <strong>Subject:</strong> <span id="emailSubject"></span>
+                        </div>
+                        <div class="email-field">
+                            <strong>Sent:</strong> <span id="emailSent"></span>
+                        </div>
+                    </div>
+                    <div class="email-body" id="emailBody">
+                        <!-- Email content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+</body>
+</html>

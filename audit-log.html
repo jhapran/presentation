@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Log - FDO Hygiene Monitoring</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>FDO Hygiene</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="projects.html" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="hygiene-rules.html" class="nav-item">
+                    <i class="fas fa-list-check"></i>
+                    <span>Hygiene Rules</span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="audit-log.html" class="nav-item active">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Log</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Audit Log</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="exportLogBtn">
+                        <i class="fas fa-download"></i> Export Log
+                    </button>
+                </div>
+            </header>
+
+            <!-- Audit Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalEvents">0</div>
+                    <div class="stat-label">Total Events</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="todayEvents">0</div>
+                    <div class="stat-label">Events Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="hygieneChecks">0</div>
+                    <div class="stat-label">Hygiene Checks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="resolutionEvents">0</div>
+                    <div class="stat-label">Resolutions</div>
+                </div>
+            </div>
+
+            <!-- Audit Log Table -->
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>Activity Log</h3>
+                    <div class="card-actions">
+                        <input type="text" placeholder="Search logs..." id="searchLogs" class="search-input">
+                        <select id="actionFilter" class="filter-select">
+                            <option value="">All Actions</option>
+                            <option value="hygiene_check">Hygiene Check</option>
+                            <option value="issue_detected">Issue Detected</option>
+                            <option value="issue_resolved">Issue Resolved</option>
+                            <option value="notification_sent">Notification Sent</option>
+                            <option value="project_created">Project Created</option>
+                            <option value="project_updated">Project Updated</option>
+                            <option value="rule_created">Rule Created</option>
+                            <option value="rule_updated">Rule Updated</option>
+                        </select>
+                        <input type="date" id="dateFilter" class="filter-select">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Action</th>
+                                <th>Entity Type</th>
+                                <th>Entity ID</th>
+                                <th>Description</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditLogTableBody">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading audit log...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Event Details</h2>
+                <button class="close-btn" id="closeDetailsModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="details-content" id="detailsContent">
+                    <!-- Details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/audit-log.js"></script>
+</body>
+</html>
